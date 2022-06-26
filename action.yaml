@@ -1,0 +1,53 @@
+name: Manage Certificates
+author: Bluewing
+description: Installs and configures certbot, before completing a DNS-01 verification challenge against the provided domains. The created certificates are then uploaded to an S3 bucket for extraction later.
+inputs:
+  token:
+    description: The token necessary to complete a DNS-01 verification.
+    required: true
+
+  domains:
+    description: A comma-separated list of domain names to generate or renew certificates for.
+    required: true
+
+  email:
+    description: The email address that notifications for the certificates will be sent to.
+    required: true
+
+  s3_access_token:
+    description: The S3 Access Token that provides access to the S3 bucket that the gzipped certificates should be uploaded to.
+    required: true
+
+  s3_secret_key:
+    description: The S3 Access Token that provides access to the S3 bucket that the gzipped certificates should be uploaded to.
+    required: true
+
+  s3_bucket:
+    description: The S3 bucket name that should be used to store the certificates.tar.gz file.
+    required: true 
+
+  s3_host:
+    description: The host of the S3 API that should be used to locate the bucket.
+    required: true
+
+  action:
+    description: The action to be taken by certbot. Either a string of 'challenge', or 'renew'.
+    required: false
+    default: challenge
+
+branding:
+  color: green
+  icon: lock
+
+runs:
+  using: docker
+  image: Dockerfile
+  args:
+    - ${{ inputs.token }}
+    - ${{ inputs.domains }}
+    - ${{ inputs.action }}
+    - ${{ inputs.s3_access_token }}
+    - ${{ inputs.s3_secret_key }}
+    - ${{ inputs.s3_bucket }}
+    - ${{ inputs.s3_host }}
+    - ${{ inputs.email }}
