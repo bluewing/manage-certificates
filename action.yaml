@@ -9,11 +9,6 @@ inputs:
   domains:
     description: A comma-separated list of domain names to generate or renew certificates for.
     required: true
-
-  email:
-    description: The email address that notifications for the certificates will be sent to.
-    required: true
-
   s3_access_token:
     description: The S3 Access Token that provides access to the S3 bucket that the gzipped certificates should be uploaded to.
     required: true
@@ -28,6 +23,10 @@ inputs:
 
   s3_host:
     description: The host of the S3 API that should be used to locate the bucket.
+    required: true
+
+  email:
+    description: The email address that notifications for the certificates will be sent to.
     required: true
 
   action:
@@ -45,9 +44,9 @@ runs:
   args:
     - ${{ inputs.token }}
     - ${{ inputs.domains }}
-    - ${{ inputs.action }}
     - ${{ inputs.s3_access_token }}
     - ${{ inputs.s3_secret_key }}
     - ${{ inputs.s3_bucket }}
     - ${{ inputs.s3_host }}
     - ${{ inputs.email }}
+    - ${{ inputs.action }}

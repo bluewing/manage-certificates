@@ -30,13 +30,11 @@ fi
 # Gzip and compress the /etc/letsencrypt directory for future use.
 tar -zcvf certificates.tar.gz /etc/letsencrypt
 
-# Configure s3cmd
-cat >>~/.s3cfg <<END
-[default]
-access_key=$S3_ACCESS_TOKEN
-secret_key=$S3_SECRET_KEY
-host_bucket=$S3_HOST
-END
-
 # Place the certificates file in the appropriate S3 bucket.
-s3cmd put certificates.tar.gz s3://$S3_BUCKET --force
+s3cmd put certificates.tar.gz s3://$S3_BUCKET --force \
+--access_key=$S3_ACCESS_TOKEN \
+--secret_key=$S3_SECRET_KEY \
+--host-bucket="$S3_HOST"
+
+# Remove any created files.
+rm digitalocean-credentials.ini certificates.tar.gz

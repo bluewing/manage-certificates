@@ -21,13 +21,13 @@ env:
 
 ## Inputs
 
-| Name              | Details                                                                                                |
-|-------------------|--------------------------------------------------------------------------------------------------------|
-| `token`           | **Required**. The token needed to interact with DigitalOcean.                                          |
-| `domains`         | **Required**. A comma-separated string containing the domains that should be managed with this action. |
-| `s3_access_token` | The access token used to access the S3-compatible API.                                                 |
-| `s3_secret_key`   | The secret key used to access the S3-compatible API.                                                   |
-| `s3_bucket`       | The bucket the certificates.tar.gz file should be uploaded to.                                         | 
-| `s3_host`         | The hostname of the S3 bucket, as expected by `s3cmd`.                                                 |
-| `email`           | The email address that should receive emails when events related to the issued certificates occur.     |
-| `action`          | The action to take, either "challenge" or "renew". If not provided, defaults to "challenge"            |
+| Name              | Details                                                                                                          |
+|-------------------|------------------------------------------------------------------------------------------------------------------|
+| `token`           | **Required**. The token needed to interact with DigitalOcean.                                                    |
+| `domains`         | **Required**. A comma-separated string containing the domains that should be managed with this action.           |
+| `s3_access_token` | **Required**. The access token used to access the S3-compatible API.                                             |
+| `s3_secret_key`   | **Required**. The secret key used to access the S3-compatible API.                                               |
+| `s3_bucket`       | **Required**. The bucket the certificates.tar.gz file should be uploaded to.                                     | 
+| `s3_host`         | **Required**. The hostname of the S3 bucket, as expected by `s3cmd`.                                             |
+| `email`           | **Required**. The email address that should receive emails when events related to the issued certificates occur. |
+| `action`          | The action to take, either "challenge" or "renew". If not provided, defaults to "challenge"                      |
