@@ -8,24 +8,39 @@ S3_BUCKET=$5
 S3_HOST=$6
 LETSENCRYPT_EMAIL=$7
 ACTION=$8
+IS_TESTING=$9
 
 # Provide DigitalOcean credentials as a file for certbot
 echo "dns_digitalocean_token = $TOKEN" > digitalocean-credentials.ini
 chmod go-rwx digitalocean-credentials.ini
 
+# Determine the certbot command that should be executed.
 if [ $ACTION == "challenge" ]; then
-    # Perform a LetsEncrypt DNS verification for the showcrew website.
-    certbot certonly --dns-digitalocean --dns-digitalocean-credentials digitalocean-credentials.ini \
-        --domains $DOMAINS \
-        --noninteractive \
-        -m $LETSENCRYPT_EMAIL \
-        --agree-tos
+  # LetsEncrypt DNS verification for the showcrew website.
+  read -r -d '' CERTBOT_CMD << EOM
+  certbot certonly --dns-digitalocean --dns-digitalocean-credentials digitalocean-credentials.ini \
+      --domains $DOMAINS \
+      --noninteractive \
+      -m $LETSENCRYPT_EMAIL \
+      --agree-tos
+EOM
+
 elif [ $ACTION == "renew" ]; then
-    # Perform a LetsEncrypt DNS renewal for the certificates provided.
+    # LetsEncrypt DNS renewal for the certificates provided.
+    read -r -d '' CERTBOT_CMD << EOM
     certbot renew --dns-digitalocean --dns-digitalocean-credentials digitalocean-credentials.ini \
         --domains $DOMAINS \
         --noninteractive
+EOM
 fi
+
+# If the IS_TESTING flag is enabled, then `--test-cert` will be appended to the certbot command.
+if [ $IS_TESTING == "true" ]; then
+  CERTBOT_CMD="$CERTBOT_CMD --test-cert"
+fi
+
+# Execute the certbot command
+eval $CERTBOT_CMD
 
 # Gzip and compress the /etc/letsencrypt directory for future use.
 tar -zcvf certificates.tar.gz /etc/letsencrypt

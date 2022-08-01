@@ -34,6 +34,11 @@ inputs:
     required: false
     default: challenge
 
+  is_testing:
+    description: Whether the LetsEncrypt staging environment should be used. This enables the `--test-cert` flag which raises the rate limits for the LetsEncrypt service.
+    required: false
+    default: "false"
+
 branding:
   color: green
   icon: lock
@@ -50,3 +55,4 @@ runs:
     - ${{ inputs.s3_host }}
     - ${{ inputs.email }}
     - ${{ inputs.action }}
+    - ${{ inputs.is_testing }}
